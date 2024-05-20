@@ -1,6 +1,8 @@
 ﻿using Common.Domain;
 using Domain.Types;
+using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
+using System.Security.Principal;
 
 namespace Domain.Entities;
 
@@ -11,6 +13,18 @@ public sealed class Article : DomainBase<Article>, IValidatableObject
 	public Article()
 	{
 		ArticleType = ArticleType.Type.Unspecified;
+		((ObservableCollection<ArticleComment>)Comments).CollectionChanged += (s, e) =>
+		{
+			if (e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Add)
+			{
+				Register(this.GetType(), (IDomainObject)e.NewItems![0]!);
+			}
+		};
+	}
+
+	public static Article Create()
+	{
+		return new Article { Id = Guid.NewGuid(), Created = DateTime.Now };
 	}
 
 	#region Article members
@@ -33,11 +47,13 @@ public sealed class Article : DomainBase<Article>, IValidatableObject
 
 	public List<string> Tags { get; set; } = new();
 
-    public DateTime CreatedOnUtc { get; set; }
+    public DateTime Created { get; set; }
 
-    public DateTime? PublishedOnUtc { get; set; }
+    public DateTime? Published { get; set; }
 
 	public byte[] Version { get; set; } = null!;
+
+	public ICollection<ArticleComment> Comments { get; set; } = new ObservableCollection<ArticleComment>();
 
 	#endregion
 
@@ -45,6 +61,12 @@ public sealed class Article : DomainBase<Article>, IValidatableObject
 
 	[NotifiedBy(nameof(Content))]
 	public static void RecalculateOnContentChange(Article article)
+	{
+		Console.WriteLine();
+	}
+
+	[NotifiedBy(nameof(ArticleComment.Comment))]
+	public static void RecalculateOnArticleCommentChange(Article article, ArticleComment comment)
 	{
 		Console.WriteLine();
 	}

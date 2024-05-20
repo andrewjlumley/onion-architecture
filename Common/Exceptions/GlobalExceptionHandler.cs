@@ -20,7 +20,7 @@ namespace Common.Exceptions
 				InvalidException => StatusCodes.Status422UnprocessableEntity,
 				_ => StatusCodes.Status500InternalServerError
 			};
-			var error = new { message = exception.Message };
+			var error = new { message = exception.ToString() };
 			await httpContext.Response.WriteAsJsonAsync(error, cancellationToken);
 			return true;
 		}

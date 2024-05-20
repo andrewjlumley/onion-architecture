@@ -30,6 +30,7 @@ builder.Services.AddDbContextPool<ApplicationDbContext>(o =>
 	string assemblyName = "Persistence"; // typeof(ApplicationDbContext).Namespace!;
 	o.UseSqlServer(connectionString, optionsBuilder => optionsBuilder.MigrationsAssembly(assemblyName));
 	// To add migration:
+	// dotnet ef migrations add InitialCreate --project Persistence --startup-project Api
 	// dotnet ef database update --project Persistence --startup-project Api
 });
 

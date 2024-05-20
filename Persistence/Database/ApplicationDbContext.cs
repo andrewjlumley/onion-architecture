@@ -16,5 +16,6 @@ namespace Persistence.Database
         }
 
         public DbSet<Article> Articles { get; set; }
-    }
+        public DbSet<ArticleComment> ArticleComments { get; set; }
+	}
 }

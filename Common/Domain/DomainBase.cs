@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -12,6 +13,13 @@ namespace Common.Domain
 	public abstract class DomainBase<TDomainObject> : IDomainObject
 		where TDomainObject : DomainBase<TDomainObject>
 	{
+		private IList<(Type, object?)> _notificationObjects = new List<(Type, object?)>();
+
+		public DomainBase()
+		{
+			Register(this.GetType());
+		}
+
 		#region Setter
 
 		public bool Setter<TPropertyType>(Func<TPropertyType> get, Action<TPropertyType> set, TPropertyType value, String propertyName)
@@ -39,23 +47,47 @@ namespace Common.Domain
 			return true;
 		}
 
-
-
 		#endregion
 
 		#region Change Handling
 
+		public void Register(Type type)
+		{
+			_notificationObjects.Add((type, null));
+		}
+
+		public void Register(IDomainObject value)
+		{
+			Register(this.GetType(), value);
+		}
+
+		public void Register(Type type, IDomainObject value)
+		{
+			value.RegisterTarget(type, (IDomainObject)this);
+		}
+
+		public void RegisterTarget(Type type, IDomainObject target)
+		{
+			_notificationObjects.Add((type, target));
+		}
+
 		private void TriggerRecalculateOnPropertyChange(String propertyName)
 		{
-			var methods = this.GetType().GetMethods(System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Static);
-
-			foreach (var method in methods)
+			foreach (var subscriber in _notificationObjects)
 			{
-				foreach (NotifiedByAttribute attrib in method.GetCustomAttributes(typeof(NotifiedByAttribute), true))
+				var methods = subscriber.Item1.GetMethods(System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Static);
+
+				foreach (var method in methods)
 				{
-					if (attrib.Properties.Contains(propertyName))
+					foreach (NotifiedByAttribute attrib in method.GetCustomAttributes(typeof(NotifiedByAttribute), true))
 					{
-						method.Invoke(null, new[] { (TDomainObject)this });
+						if (attrib.Properties.Contains(propertyName))
+						{
+							if (subscriber.Item2 != null)
+								method.Invoke(null, new[] { subscriber.Item2, (TDomainObject)this });
+							else
+								method.Invoke(null, new[] { (TDomainObject)this });
+						}
 					}
 				}
 			}

@@ -14,6 +14,9 @@ namespace Services.Mappings
 		public MappingProfile()
 		{
 			CreateMap<Article, ArticleResponse>();
+			CreateMap<ArticleRequest, Article>();
+			CreateMap<ArticleComment, ArticleCommentResponse>();
+			CreateMap<ArticleCommentRequest, ArticleComment>();
 		}
 	}
 }

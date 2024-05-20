@@ -20,15 +20,17 @@ public static class ArticleEndpoints
 			return Results.Ok(article);
 		});
 
-		app.MapPost("api/articles",async (ArticleCreateRequest request, IServiceManager service) =>
+		app.MapPost("api/articles", async (ArticleRequest request, IServiceManager service) =>
         {
-            var article = await service.Articles.CreateAsync(
-                request.Title,
-                request.Content,
-                request.Tags);
-
+			var article = await service.Articles.CreateAsync(request);
             return Results.Created($"api/articles/{article.Id}", article);
         });
+
+		app.MapPost("api/articles/{articleId}/comments", async (Guid articleId, ArticleCommentRequest request, IServiceManager service) =>
+		{
+			var comment = await service.Articles.CreateAsync(articleId, request);
+			return Results.Created($"api/articles/{articleId}/comments/{comment.Id}", comment);
+		});
 
 		app.MapPut("api/articles/{id}", async (Guid id, IServiceManager service) =>
         {

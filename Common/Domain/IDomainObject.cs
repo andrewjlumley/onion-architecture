@@ -8,8 +8,9 @@ using System.Threading.Tasks;
 
 namespace Common.Domain
 {
-	internal interface IDomainObject
+	public interface IDomainObject
 	{
+		void RegisterTarget(Type type, IDomainObject target);
 		bool TryIsValid(out ValidationResult[] violations);
 	}
 }

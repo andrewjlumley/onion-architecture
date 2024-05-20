@@ -1,13 +1,14 @@
 ﻿using Domain.Entities;
+using System.Security.Principal;
 using System.Threading;
 
 namespace Domain.Repositories
 {
     public interface IArticleRepository
     {
-        Task<IEnumerable<Article>> RetrieveAllAsync(CancellationToken cancellationToken = default);
-		Task<Article?> RetrieveAsync(Guid id, CancellationToken cancellationToken = default);
-		void Insert(Article article);
-        void Update(Article article);
-    }
+        Task<IEnumerable<Article>> RetrieveArticleAllAsync(CancellationToken cancellationToken = default);
+		Task<Article?> RetrieveArticleAsync(Guid id, CancellationToken cancellationToken = default);
+		void InsertArticle(Article article);
+        void UpdateArticle(Article article);
+	}
 }

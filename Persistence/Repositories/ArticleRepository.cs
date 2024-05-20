@@ -15,21 +15,21 @@ namespace Persistence.Repositories
 
 		private IQueryable<Article> Queryable()
 		{
-			return _dbContext.Articles.AsQueryable(); // use this to add includes
+			return _dbContext.Articles.Include(f => f.Comments).AsQueryable();
 		}
 
-		public async Task<IEnumerable<Article>> RetrieveAllAsync(CancellationToken cancellationToken = default)
+		public async Task<IEnumerable<Article>> RetrieveArticleAllAsync(CancellationToken cancellationToken = default)
 		{
 			return await Queryable().ToListAsync(cancellationToken);
 		}
 
-		public async Task<Article?> RetrieveAsync(Guid id, CancellationToken cancellationToken = default)
+		public async Task<Article?> RetrieveArticleAsync(Guid id, CancellationToken cancellationToken = default)
 		{
 			return await Queryable().FirstOrDefaultAsync(a => a.Id == id, cancellationToken);
 		}
 
-		public void Insert(Article article) => _dbContext.Articles.Add(article);
+		public void InsertArticle(Article article) => _dbContext.Articles.Add(article);
 
-        public void Update(Article article) => _dbContext.Update(article);
-    }
+        public void UpdateArticle(Article article) => _dbContext.Update(article);
+	}
 }

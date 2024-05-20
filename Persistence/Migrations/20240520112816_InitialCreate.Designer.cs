@@ -12,7 +12,7 @@ using Persistence.Database;
 namespace Persistence.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240518195154_InitialCreate")]
+    [Migration("20240520112816_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -29,7 +29,6 @@ namespace Persistence.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasMaxLength(20)
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("ArticleType")
@@ -40,11 +39,15 @@ namespace Persistence.Migrations
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
 
-                    b.Property<DateTime>("CreatedOnUtc")
+                    b.Property<DateTime>("Created")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime?>("PublishedOnUtc")
+                    b.Property<DateTime?>("Published")
                         .HasColumnType("datetime2");
+
+                    b.Property<string>("Tags")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Title")
                         .IsRequired()
@@ -62,28 +65,43 @@ namespace Persistence.Migrations
                     b.ToTable("Articles", (string)null);
                 });
 
+            modelBuilder.Entity("Domain.Entities.ArticleComment", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("ArticleId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Comment")
+                        .IsRequired()
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
+
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ArticleId");
+
+                    b.ToTable("ArticleComments", (string)null);
+                });
+
+            modelBuilder.Entity("Domain.Entities.ArticleComment", b =>
+                {
+                    b.HasOne("Domain.Entities.Article", "Article")
+                        .WithMany("Comments")
+                        .HasForeignKey("ArticleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Article");
+                });
+
             modelBuilder.Entity("Domain.Entities.Article", b =>
                 {
-                    b.OwnsOne("System.Collections.Generic.List<string>", "Tags", b1 =>
-                        {
-                            b1.Property<Guid>("ArticleId")
-                                .HasColumnType("uniqueidentifier");
-
-                            b1.Property<int>("Capacity")
-                                .HasColumnType("int");
-
-                            b1.HasKey("ArticleId");
-
-                            b1.ToTable("Articles");
-
-                            b1.ToJson("Tags");
-
-                            b1.WithOwner()
-                                .HasForeignKey("ArticleId");
-                        });
-
-                    b.Navigation("Tags")
-                        .IsRequired();
+                    b.Navigation("Comments");
                 });
 #pragma warning restore 612, 618
         }
