@@ -1,20 +1,20 @@
 ﻿using AutoMapper;
 using Contracts;
-using Domain.Entities;
+using Domain.Entities.Article;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Services.Mappings
+namespace Services.Article
 {
-	public class MappingProfile : Profile
+	public class ArticleMappingProfile : Profile
 	{
-		public MappingProfile()
+		public ArticleMappingProfile()
 		{
-			CreateMap<Article, ArticleResponse>();
-			CreateMap<ArticleRequest, Article>();
+			CreateMap<Domain.Entities.Article.Article, ArticleResponse>();
+			CreateMap<ArticleRequest, Domain.Entities.Article.Article>();
 			CreateMap<ArticleComment, ArticleCommentResponse>();
 			CreateMap<ArticleCommentRequest, ArticleComment>();
 		}

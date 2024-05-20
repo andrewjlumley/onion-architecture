@@ -1,4 +1,4 @@
-﻿using Services.Articles;
+﻿using Services.Article;
 using Domain.Repositories;
 using System;
 using System.Collections.Generic;

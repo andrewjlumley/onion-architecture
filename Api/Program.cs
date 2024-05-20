@@ -2,6 +2,7 @@ using Api;
 using Api.Endpoints;
 using Api.Extensions;
 using Services;
+using Services.Article;
 using Common.Exceptions;
 using Domain.Repositories;
 using Microsoft.AspNetCore.Diagnostics;
@@ -11,7 +12,6 @@ using Persistence.Database;
 using Persistence.Repositories;
 using static System.Net.Mime.MediaTypeNames;
 using AutoMapper;
-using Services.Mappings;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -21,7 +21,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<IServiceManager, ServiceManager>();
 builder.Services.AddScoped<IRepositoryManager, RepositoryManager>();
 
-builder.Services.AddAutoMapper(typeof(MappingProfile));
+builder.Services.AddAutoMapper(typeof(ArticleMappingProfile));
 
 builder.Services.AddDbContextPool<ApplicationDbContext>(o =>
 {

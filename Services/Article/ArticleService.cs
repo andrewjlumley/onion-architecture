@@ -1,13 +1,12 @@
 ﻿using AutoMapper;
 using Common.Exceptions;
 using Contracts;
-using Domain.Entities;
+using Domain.Entities.Article;
 using Domain.Repositories;
-using Domain.Types;
 using System.ComponentModel.DataAnnotations;
 using System.Threading;
 
-namespace Services.Articles;
+namespace Services.Article;
 
 public sealed class ArticleService : IArticleService
 {
@@ -20,7 +19,7 @@ public sealed class ArticleService : IArticleService
         _mapper = mapper;
     }
 
-	private async Task<Article> RetrieveArticle(Guid id, CancellationToken cancellationToken = default)
+	private async Task<Domain.Entities.Article.Article> RetrieveArticle(Guid id, CancellationToken cancellationToken = default)
 	{
 		var article = await _repository.ArticleRepository.RetrieveArticleAsync(id, cancellationToken);
 		if (article is null)
@@ -43,8 +42,8 @@ public sealed class ArticleService : IArticleService
 
     public async Task<ArticleResponse> CreateAsync(ArticleRequest request, CancellationToken cancellationToken = default)
     {
-		var newArticle = Article.Create();
-		newArticle = _mapper.Map<ArticleRequest, Article>(request, newArticle);
+		var newArticle = Domain.Entities.Article.Article.Create();
+		newArticle = _mapper.Map<ArticleRequest, Domain.Entities.Article.Article>(request, newArticle);
 
 		if (newArticle.TryIsValid(out ValidationResult[] violations) == false)
             throw new InvalidException(violations);

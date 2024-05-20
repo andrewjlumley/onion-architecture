@@ -1,4 +1,4 @@
-﻿using Domain.Entities;
+﻿using Domain.Entities.Article;
 using Domain.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Persistence.Database;

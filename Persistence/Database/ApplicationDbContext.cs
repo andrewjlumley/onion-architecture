@@ -1,4 +1,4 @@
-﻿using Domain.Entities;
+﻿using Domain.Entities.Article;
 using Microsoft.EntityFrameworkCore;
 
 namespace Persistence.Database

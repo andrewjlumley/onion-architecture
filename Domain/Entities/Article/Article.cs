@@ -1,10 +1,9 @@
 ﻿using Common.Domain;
-using Domain.Types;
 using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
 using System.Security.Principal;
 
-namespace Domain.Entities;
+namespace Domain.Entities.Article;
 
 public sealed class Article : DomainBase<Article>, IValidatableObject
 {

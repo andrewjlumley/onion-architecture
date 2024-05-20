@@ -1,5 +1,4 @@
-﻿using Domain.Entities;
-using Domain.Types;
+﻿using Domain.Entities.Article;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Newtonsoft.Json;

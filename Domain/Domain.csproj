@@ -10,4 +10,9 @@
     <ProjectReference Include="..\Common\Common.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Entities\Article\Value\" />
+    <Folder Include="Entities\Common\" />
+  </ItemGroup>
+
 </Project>

@@ -1,4 +1,4 @@
-﻿using Domain.Entities;
+﻿using Domain.Entities.Article;
 using System.Security.Principal;
 using System.Threading;
 
