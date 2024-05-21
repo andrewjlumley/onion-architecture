@@ -12,10 +12,13 @@ using Persistence.Database;
 using Persistence.Repositories;
 using static System.Net.Mime.MediaTypeNames;
 using AutoMapper;
+using Microsoft.AspNetCore.Server.IISIntegration;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddAuthentication(IISDefaults.AuthenticationScheme);
+
+builder.Services.AddEndpointsApiExplorer();	
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddScoped<IServiceManager, ServiceManager>();
@@ -41,14 +44,15 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
 	app.UseDeveloperExceptionPage();
-	app.UseSwagger();
-    app.UseSwaggerUI();
-
-    app.ApplyMigrations();
+	app.ApplyMigrations();
 }
+
+app.UseSwagger();
+app.UseSwaggerUI();
 
 app.UseExceptionHandler(o => { });
 app.MapArticleEndpoints();
 app.UseHttpsRedirection();
+app.UseAuthentication();
 
 app.Run();
