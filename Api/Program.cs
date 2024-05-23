@@ -24,6 +24,8 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<IServiceManager, ServiceManager>();
 builder.Services.AddScoped<IRepositoryManager, RepositoryManager>();
 
+builder.Services.AddTransient<GlobalExceptionHandler>();
+
 builder.Services.AddAutoMapper(typeof(ArticleMappingProfile));
 
 builder.Services.AddDbContextPool<ApplicationDbContext>(o =>
@@ -37,8 +39,6 @@ builder.Services.AddDbContextPool<ApplicationDbContext>(o =>
 	// dotnet ef database update --project Persistence --startup-project Api
 });
 
-builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
-
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
@@ -50,7 +50,7 @@ if (app.Environment.IsDevelopment())
 app.UseSwagger();
 app.UseSwaggerUI();
 
-app.UseExceptionHandler(o => { });
+app.UseMiddleware<GlobalExceptionHandler>();
 app.MapArticleEndpoints();
 app.UseHttpsRedirection();
 app.UseAuthentication();
