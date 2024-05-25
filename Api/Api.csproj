@@ -4,7 +4,7 @@
     <TargetFramework>net7.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
-    <UserSecretsId>91ed30e5-3b99-46bd-a6b2-34049ae1200e</UserSecretsId>
+    <AssemblyName>Onion Architecture Web API</AssemblyName>
   </PropertyGroup>
 
   <ItemGroup>

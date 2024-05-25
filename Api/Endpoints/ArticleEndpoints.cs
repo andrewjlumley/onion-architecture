@@ -1,6 +1,7 @@
 ﻿using Services;
 using Contracts;
 using Persistence.Repositories;
+using Azure.Core;
 
 namespace Api.Endpoints;
 
@@ -29,7 +30,7 @@ public static class ArticleEndpoints
 		app.MapPost("api/articles/{articleId}/comments", async (Guid articleId, ArticleCommentRequest request, IServiceManager service) =>
 		{
 			var comment = await service.Articles.CreateAsync(articleId, request);
-			return Results.Created($"api/articles/{articleId}/comments/{comment.Id}", comment);
+			return Results.Created($"api/articles/{comment.ArticleId}/comments/{comment.Id}", comment);
 		});
 
 		app.MapPut("api/articles/{id}", async (Guid id, IServiceManager service) =>
