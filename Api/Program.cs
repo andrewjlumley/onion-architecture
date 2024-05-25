@@ -14,6 +14,8 @@ using static System.Net.Mime.MediaTypeNames;
 using AutoMapper;
 using Microsoft.AspNetCore.Server.IISIntegration;
 
+var test = ClassLibrary2.Maths.Add(2, 3);
+
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddAuthentication(IISDefaults.AuthenticationScheme);
