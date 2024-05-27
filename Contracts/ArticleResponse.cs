@@ -1,10 +1,12 @@
-﻿using System.Collections.ObjectModel;
+﻿using Common.Http;
+using System.Collections.ObjectModel;
 
 namespace Contracts
 {
     public class ArticleResponse
     {
-        public Guid Id { get; set; }
+		public RestUri? Self { get; set; }
+		public Guid Id { get; set; }
         public string Title { get; set; } = string.Empty;
         public string Content { get; set; } = string.Empty;
         public List<string> Tags { get; set; } = new();

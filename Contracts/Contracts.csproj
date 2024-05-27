@@ -11,4 +11,8 @@
     <PackageId>Gestamp.OnionArchitecture.Contracts</PackageId>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Common\Common.csproj" />
+  </ItemGroup>
+
 </Project>
